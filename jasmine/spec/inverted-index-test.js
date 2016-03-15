@@ -30,35 +30,31 @@ describe('Populate Index', function() {
   // Object that contains all required functions
   var invertedIndex;
 
+  // To avoid calculating the value in a for loop
+  var arrayLength;
+
   // Make instance to access functions
   beforeAll(function(done) {
 
     invertedIndex = new InvertedIndex();
 
-    // Store returned books array as object property
-    invertedIndex.loadJSON('./books.json').done(function(data) {
+    // To make statements shorter
+    var self = invertedIndex;
 
-      invertedIndex.booksArray = data;
+    // Store returned books array as object property
+    self.loadJSON('./books.json').done(function(data) {
+
+      self.booksArray = data;
+      arrayLength = self.booksArray.length;
+      console.log(arrayLength);
+      self.createIndex();
+      done();
     });
 
-    // Concatenate objects' strings for easier lookup
-    function concat(obj) {
-
-      var keys = Object.keys(obj);
-      var concatString = '';
-
-      keys.forEach(function(key) {
-
-        concatString += obj.key;
-      });
-
-      return concatString;
-    }
-
     // Convert booksArray into array of constituting strings
-    for(var i = 0; i < (invertedIndex.booksArray).length; i++) {
+    for(var i = 0; i < arrayLength; i++) {
 
-      invertedIndex.booksArray[i] = concat(invertedIndex.booksArray[i]);
+      self.booksArray[i] = self.concat(self.booksArray[i]);
     }
   });
 
@@ -67,7 +63,7 @@ describe('Populate Index', function() {
 
     expect(invertedIndex.index).toBeDefined();
     expect(invertedIndex.index).toEqual(jasmine.any(Object));
-    exopect(invertedIndex.index).not.toEqual({});
+    expect(invertedIndex.index).not.toEqual({});
   });
 
   // Test whetehr index maps the string keys to the correct objects
