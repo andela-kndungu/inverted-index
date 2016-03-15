@@ -9,9 +9,10 @@ describe('Read book data', function() {
     invertedIndex = new InvertedIndex();
 
     // Store returned books array as object property
-    invertedIndex.loadJSON('../books.json').done(function(data) {
+    invertedIndex.loadJSON('./books.json').done(function(data) {
 
       invertedIndex.booksArray = data;
+      done();
     });
   });
 
@@ -20,7 +21,7 @@ describe('Read book data', function() {
 
     expect(invertedIndex.booksArray).toBeDefined();
     expect(invertedIndex.booksArray).toEqual(jasmine.any(Object));
-    exopect(invertedIndex.booksArray).not.toEqual({});
+    expect(invertedIndex.booksArray).not.toEqual({});
   });
 });
 
@@ -35,7 +36,7 @@ describe('Populate Index', function() {
     invertedIndex = new InvertedIndex();
 
     // Store returned books array as object property
-    invertedIndex.loadJSON('../books.json').done(function(data) {
+    invertedIndex.loadJSON('./books.json').done(function(data) {
 
       invertedIndex.booksArray = data;
     });
@@ -93,6 +94,22 @@ describe('Populate Index', function() {
 });
 
 describe('Search index', function() {
+
+  // Object that contains all required functions
+  var invertedIndex;
+
+  // Make instance to access functions
+  beforeAll(function(done) {
+
+    invertedIndex = new InvertedIndex();
+
+    // Store returned books array as object property
+    invertedIndex.loadJSON('./books.json').done(function(data) {
+
+      invertedIndex.booksArray = data;
+      done();
+    });
+  });
 
   it('returns an array of the indices of the correct objects', function() {
 
