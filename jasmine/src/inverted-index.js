@@ -1,1 +1,0 @@
-alert('src file works');
