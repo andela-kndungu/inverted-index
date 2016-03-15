@@ -91,3 +91,12 @@ describe('Populate Index', function() {
     });
   });
 });
+
+describe('Search index', function() {
+
+  it('returns an array of the indices of the correct objects', function() {
+
+    expect(invertedIndex.searchIndex('alice')).toBeEqual([0]);
+    expect(invertedIndex.searchIndex('lord')).toBeEqual([1]);
+  });
+});
