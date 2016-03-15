@@ -1,0 +1,1 @@
+alert('Spec file works');
