@@ -92,19 +92,19 @@ describe('Search index', function() {
   // Make instance to access functions
   beforeAll(function(done) {
 
-    invertedIndex = new InvertedIndex();
+    indxObj = new InvertedIndex();
 
     // Store returned books array as object property
-    invertedIndex.loadJSON('./books.json').done(function(data) {
+    indxObj.loadJSON('./books.json').done(function(data) {
 
-      invertedIndex.booksArray = data;
+      indxObj.booksArray = data;
       done();
     });
   });
 
   it('returns an array of the indices of the correct objects', function() {
 
-    expect(invertedIndex.searchIndex('alice')).toBeEqual([0]);
-    expect(invertedIndex.searchIndex('lord')).toBeEqual([1]);
+    expect(indxObj.searchIndex('alice')).toEqual([0]);
+    expect(indxObj.searchIndex('lord')).toEqual([1]);
   });
 });

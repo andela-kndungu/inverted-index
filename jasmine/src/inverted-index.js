@@ -47,6 +47,9 @@ InvertedIndex.prototype.createIndex = function() {
     // Turn object's values into one string
     var objString = self.concat(obj);
 
+    // Turn to lowercase to normalize
+    objString = objString.toLowerCase();
+
     // If the word is in the resulting string
     if (objString.indexOf(word) > -1) {
 
@@ -81,6 +84,7 @@ InvertedIndex.prototype.createIndex = function() {
   allStrings = allStrings.filter(function(item, pos) {
     return item !== '';
   });
+  console.log(allStrings);
 
   // For every word
   allStrings.forEach(function(word) {
@@ -104,5 +108,20 @@ InvertedIndex.prototype.createIndex = function() {
 
   });
 
-  // self.index;
+  console.log(self.index);
+};
+
+// Return object(s) where word occurs
+InvertedIndex.prototype.searchIndex = function(word) {
+
+  // If index has not been created
+  if (!this.index) {
+
+    // Create the index
+    this.createIndex();
+  }
+
+  // console.log(this);
+
+  return this.index[word];
 };
