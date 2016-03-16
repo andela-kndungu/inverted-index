@@ -14,6 +14,8 @@ InvertedIndex.prototype.concat = function(obj) {
   // Array of object's properties
   var keys = Object.keys(obj);
 
+
+
   // Will store result of concatenation
   var concatString = '';
 
@@ -21,7 +23,7 @@ InvertedIndex.prototype.concat = function(obj) {
   keys.forEach(function(key) {
 
     // Add it's value to the string
-    concatString += obj.key;
+    concatString += obj[key] + " ";
   });
 
   return concatString;
@@ -39,30 +41,11 @@ InvertedIndex.prototype.createIndex = function() {
   // All strings in the objects concatenated into one
   var allStrings = '';
 
-  // Will combine all strings in an object into one string
-  function concat(obj) {
-
-    // Array of object's keys
-    var keys = Object.keys(obj);
-
-    // Will store all concatenated stings
-    var concatString = '';
-
-    // For each property
-    keys.forEach(function(key) {
-
-      // Add it's property to the string
-      concatString += obj.key;
-    });
-
-    return concatString;
-  }
-
   // Returns true if provided word is in object's values
   function wordInObject(word, obj) {
 
     // Turn object's values into one string
-    var objString = concat(obj);
+    var objString = self.concat(obj);
 
     // If the word is in the resulting string
     if (objString.indexOf(word) > -1) {
@@ -74,11 +57,11 @@ InvertedIndex.prototype.createIndex = function() {
   }
 
   // For every object in the array
-  this.booksArray.forEach(function(book) {
+  for (var i = 0; i < self.booksArray.length; i++) {
 
-    // Extracts values of its properties and add to allStrings
-    allStrings += concat(book);
-  });
+    // Extract values of its properties and add to allStrings
+    allStrings += self.concat(self.booksArray[i]);
+  }
 
   // Remove punctuation marks from the string
   allStrings = allStrings.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
@@ -86,11 +69,21 @@ InvertedIndex.prototype.createIndex = function() {
   // Turn to lowercase to normalize
   allStrings = allStrings.toLowerCase();
 
-  // Turn into array to iterate over the words
+  // Turn into array to be able to iterate over the words
   allStrings = allStrings.split(' ');
 
+  // Remove duplicates
+  allStrings = allStrings.filter(function(item, pos) {
+    return allStrings.indexOf(item) == pos;
+  });
+
+  // Remove empty string
+  allStrings = allStrings.filter(function(item, pos) {
+    return item !== '';
+  });
+
   // For every word
-  allStrings.forEach(function(token) {
+  allStrings.forEach(function(word) {
 
     // Indices of objects in booksArray in which word is found
     var objIndices = [];
@@ -99,15 +92,17 @@ InvertedIndex.prototype.createIndex = function() {
     for (var i = 0; i < self.booksArray.length; i++) {
 
       // If word is in the object
-      if (wordInObject(token, self.booksArray[i])) {
+      if (wordInObject(word, self.booksArray[i])) {
 
         // Add object's index
         objIndices.push(i);
       }
+
+      // Add property to index object
+      self.index[word] = objIndices;
     }
 
-    // Add property to index object
-    self.index[token] = objIndices;
-
   });
+
+  // self.index;
 };
