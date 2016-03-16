@@ -26,6 +26,9 @@ InvertedIndex.prototype.concat = function(obj) {
     concatString += obj[key] + " ";
   });
 
+  // Turn to lowercase to normalize
+  concatString = concatString.toLowerCase();
+
   return concatString;
 };
 
@@ -84,7 +87,6 @@ InvertedIndex.prototype.createIndex = function() {
   allStrings = allStrings.filter(function(item, pos) {
     return item !== '';
   });
-  console.log(allStrings);
 
   // For every word
   allStrings.forEach(function(word) {
@@ -107,8 +109,6 @@ InvertedIndex.prototype.createIndex = function() {
     }
 
   });
-
-  console.log(self.index);
 };
 
 // Return object(s) where word occurs

@@ -76,6 +76,8 @@ describe('Populate Index', function() {
         // Get corresponding object as a single string
         var book = indxObj.concat(indxObj.booksArray[index]);
 
+        console.log(book);
+
         // Check whether string property is in it
         expect(book.indexOf(property)).toBeGreaterThan(-1);
 
