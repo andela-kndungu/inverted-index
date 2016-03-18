@@ -1,112 +1,116 @@
-describe('Read book data', function() {
+describe('Inverted Index Object', function() {
 
-  // Object that contains all required functions
-  var invertedIndex;
+  describe('Read book data', function() {
 
-  // Make instance to access functions
-  beforeAll(function(done) {
+    // Object that contains all required functions
+    var invertedIndex;
 
-    invertedIndex = new InvertedIndex();
+    // Make instance to access functions
+    beforeAll(function(done) {
 
-    // Store returned books array as object property
-    invertedIndex.loadJSON('./books.json').done(function(data) {
+      invertedIndex = new InvertedIndex();
 
-      invertedIndex.booksArray = data;
-      done();
+      // Store returned books array as object property
+      invertedIndex.loadJSON('./books.json').done(function(data) {
+
+        invertedIndex.booksArray = data;
+        done();
+      });
+    });
+
+    // Test function that reads and parses JSON file
+    it('correctly reads and parses json file', function() {
+
+      expect(invertedIndex.booksArray).toBeDefined();
+      expect(invertedIndex.booksArray).toEqual(jasmine.any(Object));
+      expect(invertedIndex.booksArray).not.toEqual({});
     });
   });
 
-  // Test function that reads and parses JSON file
-  it('correctly reads and parses json file', function() {
+  describe('Populate Index', function() {
 
-    expect(invertedIndex.booksArray).toBeDefined();
-    expect(invertedIndex.booksArray).toEqual(jasmine.any(Object));
-    expect(invertedIndex.booksArray).not.toEqual({});
-  });
-});
+    // Object that contains all required functions
+    var indxObj;
 
-describe('Populate Index', function() {
+    // Make instance to access functions
+    beforeAll(function(done) {
 
-  // Object that contains all required functions
-  var indxObj;
+      // Instantiatiate the object to access properties
+      indxObj = new InvertedIndex();
 
-  // Make instance to access functions
-  beforeAll(function(done) {
+      // Load the json file
+      indxObj.loadJSON('./books.json').done(function(data) {
 
-    // Instantiatiate the object to access properties
-    indxObj = new InvertedIndex();
+        // Store json data as object property for easier access
+        indxObj.booksArray = data;
 
-    // Load the json file
-    indxObj.loadJSON('./books.json').done(function(data) {
+        // Create index after JSON file is loaded
+        indxObj.createIndex();
 
-      // Store json data as object property for easier access
-      indxObj.booksArray = data;
-
-      // Create index after JSON file is loaded
-      indxObj.createIndex();
-
-      // Only continue after the asynchronous loadJSON finishes loading
-      done();
+        // Only continue after the asynchronous loadJSON finishes loading
+        done();
+      });
     });
-  });
 
-  // Test whetehr index is created as soon as JSON loads
-  it('correctly creates index from loaded JSON', function() {
+    // Test whetehr index is created as soon as JSON loads
+    it('correctly creates index from loaded JSON', function() {
 
-    expect(indxObj.index).toBeDefined();
-    expect(indxObj.index).toEqual(jasmine.any(Object));
-    expect(indxObj.index).not.toEqual({});
-  });
+      expect(indxObj.index).toBeDefined();
+      expect(indxObj.index).toEqual(jasmine.any(Object));
+      expect(indxObj.index).not.toEqual({});
+    });
 
-  // Test whetehr index maps the string keys to the correct objects
-  it('correctly maps keys to objects', function() {
+    // Test whetehr index maps the string keys to the correct objects
+    it('correctly maps keys to objects', function() {
 
-    // String properties of the index
-    var properties = Object.keys(indxObj.index);
+      // String properties of the index
+      var properties = Object.keys(indxObj.index);
 
-    // For each property
-    properties.forEach(function(property) {
+      // For each property
+      properties.forEach(function(property) {
 
-      // Get array of object indices associated with it
-      var indicesArray = indxObj.index[property];
+        // Get array of object indices associated with it
+        var indicesArray = indxObj.index[property];
 
-      // For each index
-      indicesArray.forEach(function(index) {
+        // For each index
+        indicesArray.forEach(function(index) {
 
-        // Get corresponding object as a single string
-        var book = indxObj.concat(indxObj.booksArray[index]);
+          // Get corresponding object as a single string
+          var book = indxObj.concat(indxObj.booksArray[index]);
 
-        console.log(book);
+          console.log(book);
 
-        // Check whether string property is in it
-        expect(book.indexOf(property)).toBeGreaterThan(-1);
+          // Check whether string property is in it
+          expect(book.indexOf(property)).toBeGreaterThan(-1);
 
+        });
       });
     });
   });
-});
 
-describe('Search index', function() {
+  describe('Search index', function() {
 
-  // Object that contains all required functions
-  var invertedIndex;
+    // Object that contains all required functions
+    var invertedIndex;
 
-  // Make instance to access functions
-  beforeAll(function(done) {
+    // Make instance to access functions
+    beforeAll(function(done) {
 
-    indxObj = new InvertedIndex();
+      indxObj = new InvertedIndex();
 
-    // Store returned books array as object property
-    indxObj.loadJSON('./books.json').done(function(data) {
+      // Store returned books array as object property
+      indxObj.loadJSON('./books.json').done(function(data) {
 
-      indxObj.booksArray = data;
-      done();
+        indxObj.booksArray = data;
+        done();
+      });
+    });
+
+    it('returns an array of the indices of the correct objects', function() {
+
+      expect(indxObj.searchIndex('alice')).toEqual([0]);
+      expect(indxObj.searchIndex('lord')).toEqual([1]);
     });
   });
 
-  it('returns an array of the indices of the correct objects', function() {
-
-    expect(indxObj.searchIndex('alice')).toEqual([0]);
-    expect(indxObj.searchIndex('lord')).toEqual([1]);
-  });
 });
