@@ -25,7 +25,7 @@ describe('Inverted Index Object', function() {
       expect(invertedIndexObject.index).not.toBeDefined();
     });
 
-    // Test whetehr index is created after createIndex() is called
+    // Test whether index is created after createIndex() is called
     it('correctly creates index from loaded JSON', function() {
       invertedIndexObject.createIndex();
       expect(invertedIndexObject.index).toBeDefined();
@@ -53,13 +53,10 @@ describe('Inverted Index Object', function() {
             .concat(invertedIndexObject.booksArray[index]);
           // Check whether string property is in it
           expect(book.indexOf(property)).toBeGreaterThan(-1);
-
         });
       });
     });
-
-
-  });
+});
 
   describe('Search index', function() {
     // Store results of searching for various words
@@ -70,6 +67,9 @@ describe('Inverted Index Object', function() {
       results.push(invertedIndexObject.searchIndex('lord'));
       results.push(invertedIndexObject.searchIndex('and'));
       results.push(invertedIndexObject.searchIndex('notInObjects'));
+      results.push(invertedIndexObject.searchIndex('alice', 'lord'));
+      results.push(invertedIndexObject.searchIndex(['alice', 'lord']));
+      results.push(invertedIndexObject.searchIndex('hole', 'elf', ['in', 'x']));
       results.forEach(function(item) {
         expect(item).toEqual(jasmine.any(Array));
       });
@@ -77,16 +77,28 @@ describe('Inverted Index Object', function() {
 
     it('finds word in one object', function() {
       // Will test both length and contents of array
-      expect(results[0]).toEqual([0]);
-      expect(results[1]).toEqual([1]);
+      expect(results[0]).toEqual([[0]]);
+      expect(results[1]).toEqual([[1]]);
     });
 
     it('finds word in multiple objects', function() {
-      expect(results[2]).toEqual([0, 1]);
+      expect(results[2]).toEqual([[0, 1]]);
     });
 
-    it('returns empty array if word is not found', function() {
-      expect(results[3]).toEqual([]);
+    it('returns array with -1 when word is not found', function() {
+      expect(results[3]).toEqual([[-1]]);
+    });
+
+    it('returns array or reults when given multiple words', function() {
+      expect(results[4]).toEqual([[0], [1]]);
+    });
+
+    it('returns array of indices for each word in an array', function() {
+      expect(results[5]).toEqual([[[0], [1]]]);
+    });
+
+    it('combination of words and arrays', function() {
+      expect(results[6]).toEqual([[0], [1], [[0, 1], [-1]]]);
     });
   });
 });

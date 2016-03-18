@@ -3,6 +3,7 @@ var InvertedIndex = function() {};
 // Reads and parses JSON file
 InvertedIndex.prototype.loadJSON = function(filename) {
   // Return object to run callback when running funcion
+  self = this;
   return $.getJSON(filename);
 };
 
@@ -65,20 +66,34 @@ InvertedIndex.prototype.createIndex = function() {
         objectIndices.push(i);
       }
     }
-
     // Add property to index object
     self.index[word] = objectIndices;
-
   });
 };
 
 // Return object(s) where word occurs
-InvertedIndex.prototype.searchIndex = function(word) {
-  // If index has not been created
-  if (!this.index) {
-    // Create the index
-    this.createIndex();
+InvertedIndex.prototype.searchIndex = function() {
+  var result = [];
+  // Handle differently for strings and arrays
+  for (var i = 0; i < arguments.length; i++) {
+    if(typeof (arguments[i]) === typeof('')){
+      result.push(this.index[arguments[i]] || [-1]);
+    }
+    else if(Array.isArray(arguments[i])) {
+      result.push(this.arraySearch(arguments[i]));
+    }
+    else {
+      result.push([-1]);
+    }
   }
-  // If word is not in the index return an empty array
-  return this.index[word] || [];
+  return result;
+};
+
+// Get words array index array
+InvertedIndex.prototype.arraySearch = function (array) {
+  var result= [];
+  for (var i = 0; i < array.length; i++) {
+    result.push(this.index[array[i]] || [-1]);
+  }
+  return result;
 };
