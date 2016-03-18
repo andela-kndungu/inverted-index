@@ -60,30 +60,33 @@ describe('Inverted Index Object', function() {
 
 
   });
-  //
-  // describe('Search index', function() {
-  //
-  //   // Object that contains all required functions
-  //   var invertedIndex;
-  //
-  //   // Make instance to access functions
-  //   beforeAll(function(done) {
-  //
-  //     indxObj = new InvertedIndex();
-  //
-  //     // Store returned books array as object property
-  //     indxObj.loadJSON('./books.json').done(function(data) {
-  //
-  //       indxObj.booksArray = data;
-  //       done();
-  //     });
-  //   });
-  //
-  //   it('returns an array of the indices of the correct objects', function() {
-  //
-  //     expect(indxObj.searchIndex('alice')).toEqual([0]);
-  //     expect(indxObj.searchIndex('lord')).toEqual([1]);
-  //   });
-  // });
 
+  describe('Search index', function() {
+    // Store results of searching for various words
+    var results = [];
+    it('returns an array', function() {
+      // invertedIndexObject is undefined outside it blocks
+      results.push(invertedIndexObject.searchIndex('alice'));
+      results.push(invertedIndexObject.searchIndex('lord'));
+      results.push(invertedIndexObject.searchIndex('and'));
+      results.push(invertedIndexObject.searchIndex('notInObjects'));
+      results.forEach(function(item) {
+        console.log(item);
+        expect(item).toEqual(jasmine.any(Array));
+      });
+    });
+
+    it('finds word in one object', function() {
+      expect(results[0]).toEqual([0]);
+      expect(results[1]).toEqual([1]);
+    });
+
+    it('finds word in multiple objects', function() {
+      expect(results[2]).toEqual([0, 1]);
+    });
+
+    it('returns empty array if word is not found', function() {
+      expect(results[3]).toEqual([]);
+    });
+  });
 });
