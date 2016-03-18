@@ -71,12 +71,12 @@ describe('Inverted Index Object', function() {
       results.push(invertedIndexObject.searchIndex('and'));
       results.push(invertedIndexObject.searchIndex('notInObjects'));
       results.forEach(function(item) {
-        console.log(item);
         expect(item).toEqual(jasmine.any(Array));
       });
     });
 
     it('finds word in one object', function() {
+      // Will test both length and contents of array
       expect(results[0]).toEqual([0]);
       expect(results[1]).toEqual([1]);
     });

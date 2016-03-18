@@ -35,6 +35,7 @@
     "expect",
     "InvertedIndex",
     "beforeAll",
+    "$",
     "exports"
   ],
   "quotmark": true,
