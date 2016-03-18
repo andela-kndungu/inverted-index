@@ -1,7 +1,7 @@
 describe('Inverted Index Object', function() {
   // Instanciate object and load JSON before each test
   var invertedIndexObject;
-  beforeEach(function(done) {
+  beforeAll(function(done) {
     invertedIndexObject = new InvertedIndex();
     // Store returned books array as object property
     invertedIndexObject.loadJSON('./books.json').done(function(data) {
@@ -19,66 +19,39 @@ describe('Inverted Index Object', function() {
     });
   });
 
-  // describe('Populate Index', function() {
-  //
-  //   // Object that contains all required functions
-  //   var indxObj;
-  //
-  //   // Make instance to access functions
-  //   beforeAll(function(done) {
-  //
-  //     // Instantiatiate the object to access properties
-  //     indxObj = new InvertedIndex();
-  //
-  //     // Load the json file
-  //     indxObj.loadJSON('./books.json').done(function(data) {
-  //
-  //       // Store json data as object property for easier access
-  //       indxObj.booksArray = data;
-  //
-  //       // Create index after JSON file is loaded
-  //       indxObj.createIndex();
-  //
-  //       // Only continue after the asynchronous loadJSON finishes loading
-  //       done();
-  //     });
-  //   });
-  //
-  //   // Test whetehr index is created as soon as JSON loads
-  //   it('correctly creates index from loaded JSON', function() {
-  //
-  //     expect(indxObj.index).toBeDefined();
-  //     expect(indxObj.index).toEqual(jasmine.any(Object));
-  //     expect(indxObj.index).not.toEqual({});
-  //   });
-  //
-  //   // Test whetehr index maps the string keys to the correct objects
-  //   it('correctly maps keys to objects', function() {
-  //
-  //     // String properties of the index
-  //     var properties = Object.keys(indxObj.index);
-  //
-  //     // For each property
-  //     properties.forEach(function(property) {
-  //
-  //       // Get array of object indices associated with it
-  //       var indicesArray = indxObj.index[property];
-  //
-  //       // For each index
-  //       indicesArray.forEach(function(index) {
-  //
-  //         // Get corresponding object as a single string
-  //         var book = indxObj.concat(indxObj.booksArray[index]);
-  //
-  //         console.log(book);
-  //
-  //         // Check whether string property is in it
-  //         expect(book.indexOf(property)).toBeGreaterThan(-1);
-  //
-  //       });
-  //     });
-  //   });
-  // });
+  describe('Populate Index', function() {
+    // Index property should not exist before createIndex() is called
+    it('does not create index before createIndex() is called', function() {
+      expect(invertedIndexObject.index).not.toBeDefined();
+    });
+
+    // Test whetehr index is created after createIndex() is called
+    it('correctly creates index from loaded JSON', function() {
+      invertedIndexObject.createIndex();
+      expect(invertedIndexObject.index).toBeDefined();
+      expect(invertedIndexObject.index).toEqual(jasmine.any(Object));
+      expect(invertedIndexObject.index).not.toEqual({});
+    });
+
+    // Test whetehr index maps the string keys to the correct objects
+    it('correctly maps keys to objects', function() {
+      // String properties of the index
+      var properties = Object.keys(invertedIndexObject.index);
+      // For each property
+      properties.forEach(function(property) {
+        // Get array of object indices associated with it
+        var indicesArray = invertedIndexObject.index[property];
+        // For each index
+        indicesArray.forEach(function(index) {
+          // Get corresponding object as a single string
+          var book = invertedIndexObject.concat(invertedIndexObject.booksArray[index]);
+          // Check whether string property is in it
+          expect(book.indexOf(property)).toBeGreaterThan(-1);
+
+        });
+      });
+    });
+  });
   //
   // describe('Search index', function() {
   //
