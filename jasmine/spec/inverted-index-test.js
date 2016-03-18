@@ -33,6 +33,11 @@ describe('Inverted Index Object', function() {
       expect(invertedIndexObject.index).not.toEqual({});
     });
 
+    // Test whether the function recognises foreign keys
+    it('does not recognise keys not in the index', function() {
+      expect(invertedIndexObject.index.notInIndex).not.toBeDefined();
+    });
+
     // Test whetehr index maps the string keys to the correct objects
     it('correctly maps keys to objects', function() {
       // String properties of the index
@@ -44,13 +49,16 @@ describe('Inverted Index Object', function() {
         // For each index
         indicesArray.forEach(function(index) {
           // Get corresponding object as a single string
-          var book = invertedIndexObject.concat(invertedIndexObject.booksArray[index]);
+          var book = invertedIndexObject
+            .concat(invertedIndexObject.booksArray[index]);
           // Check whether string property is in it
           expect(book.indexOf(property)).toBeGreaterThan(-1);
 
         });
       });
     });
+
+
   });
   //
   // describe('Search index', function() {

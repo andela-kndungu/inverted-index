@@ -32,6 +32,9 @@
     "browser",
     "element",
     "by",
+    "expect",
+    "InvertedIndex",
+    "beforeAll",
     "exports"
   ],
   "quotmark": true,
