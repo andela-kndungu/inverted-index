@@ -3,7 +3,7 @@ var InvertedIndex = function() {};
 // Reads and parses JSON file
 InvertedIndex.prototype.loadJSON = function(filename) {
   // Return object to run callback when running funcion
-  self = this;
+  console.log($.getJSON(filename))
   return $.getJSON(filename);
 };
 

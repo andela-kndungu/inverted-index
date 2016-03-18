@@ -89,7 +89,7 @@ describe('Inverted Index Object', function() {
       expect(results[3]).toEqual([[-1]]);
     });
 
-    it('returns array or reults when given multiple words', function() {
+    it('returns array of results when given multiple words', function() {
       expect(results[4]).toEqual([[0], [1]]);
     });
 
