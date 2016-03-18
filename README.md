@@ -38,5 +38,7 @@ From a browser navigate to `http://127.0.0.1:8080/SpecRunner.html`
 ## Functions being tested
 
 `loadJSON(filepath)` : Loads and parses the .json file specified by `filepath`
+
 `createIndex()` : Creates an inverted index object from the loaded JSON
+
 `searchIndex(arguments)` : Takes a variable number of string or array arguments and returns an array of indices of where the words appear in the loaded JSON array
